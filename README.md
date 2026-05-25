@@ -24,7 +24,7 @@ Install and apply the Omarchy theme:
 omarchy theme install https://github.com/Hollowiman/kostoxomarchy.git
 ```
 
-To also install the matching Waybar layout and Bash prompt:
+To also install the matching Waybar layout, Bash prompt, screensaver branding, login logo, and boot logo:
 
 ```bash
 ~/.config/omarchy/themes/kostoxomarchy/install-extras.sh
@@ -51,6 +51,16 @@ Omarchy does not apply `starship.toml` automatically when a theme is installed. 
 
 ```bash
 cp -a ~/.config/omarchy/themes/kostoxomarchy/starship.toml ~/.config/starship.toml
+```
+
+## Login, boot, and screensaver branding
+The included installer applies `logo.png` to Plymouth and SDDM using Omarchy's `omarchy plymouth set` command. This may ask for sudo because boot/login assets live under `/usr/share` and initramfs must be rebuilt.
+
+It also copies:
+
+```text
+branding/screensaver.txt -> ~/.config/omarchy/branding/screensaver.txt
+branding/about.txt       -> ~/.config/omarchy/branding/about.txt
 ```
 
 Wallpapers live in `backgrounds/`; `preview.png` and `preview2.png` show the intended look.
