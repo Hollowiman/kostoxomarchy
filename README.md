@@ -18,11 +18,16 @@ Personal Omarchy theme snapshot based on the current desktop setup. This copy pr
 - Icon theme pointer (`icons.theme`)
 
 ## Quick start
-Run the installer and it will place everything where it belongs:
+Install and apply the Omarchy theme:
 
 ```bash
-cp -a kostox ~/.config/omarchy/themes/
-omarchy theme set Kostox
+omarchy theme install https://github.com/Hollowiman/kostoxomarchy.git
+```
+
+To also install the matching Waybar layout and Bash prompt:
+
+```bash
+~/.config/omarchy/themes/kostoxomarchy/install-extras.sh
 ```
 
 ## Waybar install
@@ -33,6 +38,12 @@ mkdir -p ~/.config/waybar.backup
 cp -a ~/.config/waybar/* ~/.config/waybar.backup/
 cp -a waybar-theme/* ~/.config/waybar/
 omarchy-restart-waybar
+```
+
+Or use the included installer, which also copies `waybar-theme/scripts/` and backs up your existing Waybar config:
+
+```bash
+~/.config/omarchy/themes/kostoxomarchy/install-extras.sh
 ```
 
 ## Bash prompt install

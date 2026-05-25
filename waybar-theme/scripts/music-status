@@ -1,0 +1,47 @@
+#!/bin/bash
+
+escape_markup() {
+  local text="$1"
+  text="${text//&/&amp;}"
+  text="${text//</&lt;}"
+  text="${text//>/&gt;}"
+  printf '%s' "$text"
+}
+
+if command -v playerctl >/dev/null 2>&1 && playerctl -p spotify_player status 2>/dev/null | grep -qx "Playing"; then
+  metadata="$(playerctl -p spotify_player metadata --format '{{artist}}|{{title}}' 2>/dev/null)"
+  artists="${metadata%%|*}"
+  track="${metadata#*|}"
+
+  if [[ -n $track && $metadata == *"|"* ]]; then
+    artists="$(escape_markup "$artists")"
+    track="$(escape_markup "$track")"
+
+    if [[ -n $artists ]]; then
+      printf ' ·  %s - %s\n' "$track" "$artists"
+    else
+      printf ' ·  %s\n' "$track"
+    fi
+    exit 0
+  fi
+fi
+
+if command -v cliamp >/dev/null 2>&1; then
+  status="$(cliamp status 2>/dev/null)" || exit 0
+
+  state=""
+  track=""
+
+  while IFS= read -r line; do
+    case "$line" in
+      "State: "*) state="${line#State: }" ;;
+      "Track: "*) track="${line#Track: }" ;;
+    esac
+  done <<< "$status"
+
+  [[ $state == "playing" && -n $track ]] || exit 0
+
+  track="$(escape_markup "$track")"
+
+  printf ' ·  %s\n' "$track"
+fi
