@@ -1,0 +1,179 @@
+format = """\
+[╭╴](fg:arrow)\
+$os\
+$username\
+$directory\
+${custom.battery_status}\
+$time\
+(\
+    $git_branch\
+    $git_status\
+)\
+(\
+    $python\
+    $conda\
+    $nodejs\
+)\
+$cmd_duration
+[╰─](fg:arrow)$character\
+"""
+
+add_newline = true
+palette = "batman"
+
+[palettes.batman]
+arrow = "#737174"
+os = "#505354"
+os_admin = "#e6dc44"
+username = "#f4fd22"
+directory = "#737174"
+battery = "#e6dc44"
+node = "#c8be46"
+time = "#62605f"
+git = "#f4fd22"
+git_status = "#e6dc44"
+python = "#feed6c"
+conda = "#c8be46"
+duration = "#fcef0c"
+text_color = "#dadbd6"
+text_light = "#1b1d1e"
+error = "#fff78e"
+
+[os]
+disabled = false
+style = "fg:text_color bg:os"
+format = '[ ](fg:os)[$symbol ]($style)[](fg:os)'
+
+[username]
+style_user = 'username'
+style_root = 'os_admin'
+format = '[ ](fg:$style)[$user ](bg:$style fg:text_light)[](fg:$style)'
+disabled = false
+show_always = true
+
+[custom.battery_status]
+when = "command -v upower >/dev/null 2>&1 && upower -e | grep -q BAT"
+shell = ["bash", "--noprofile", "--norc"]
+command = """
+battery=$(upower -e | grep BAT | head -n1)
+info=$(upower -i "$battery")
+
+percentage=$(echo "$info" | awk '/percentage:/ {print $2}')
+state=$(echo "$info" | awk '/state:/ {print $2}')
+
+time_to_empty=$(echo "$info" | awk -F: '/time to empty:/ {gsub(/^[ \\t]+/, "", $2); print $2}')
+time_to_full=$(echo "$info" | awk -F: '/time to full:/ {gsub(/^[ \\t]+/, "", $2); print $2}')
+
+case "$state" in
+  charging)
+    symbol="󰂄 "
+    eta="$time_to_full full"
+    ;;
+  discharging)
+    symbol="󰂃 "
+    eta="$time_to_empty left"
+    ;;
+  fully-charged)
+    symbol="󰁹 "
+    eta=""
+    ;;
+  *)
+    symbol="󰂑 "
+    eta=""
+    ;;
+esac
+
+if [ -n "$eta" ]; then
+  echo "$symbol$percentage · $eta"
+else
+  echo "$symbol$percentage"
+fi
+"""
+format = " [](fg:battery)[$output]($style)[](fg:battery)"
+style = "fg:text_light bg:battery"
+
+[character]
+success_symbol = "[󰍟](fg:arrow)"
+error_symbol = "[󰍟](fg:error)"
+
+[directory]
+format = " [](fg:directory)[  $path ]($style)[$read_only]($read_only_style)[](fg:directory)"
+truncation_length = 2
+style = "fg:text_color bg:directory"
+read_only_style = "fg:text_color bg:directory"
+before_repo_root_style = "fg:text_color bg:directory"
+truncate_to_repo = true
+truncation_symbol = "…/"
+read_only ="  "
+
+[time]
+disabled = false
+format = " [](fg:time)[ $time]($style)[](fg:time)"
+time_format = "%H:%M"
+style = "fg:text_color bg:time"
+
+[cmd_duration]
+format = " [](fg:duration)[ $duration]($style)[](fg:duration)"
+style = "fg:text_light bg:duration"
+min_time = 500
+
+[git_branch]
+format = " [](fg:git)[$symbol$branch](fg:text_light bg:git)[](fg:git)"
+symbol = " "
+
+[git_status]
+format = '([ ](fg:git_status)[ $all_status$ahead_behind ]($style)[](fg:git_status))'
+style = "fg:text_light bg:git_status"
+
+[docker_context]
+disabled=true
+
+[package]
+disabled=true
+
+[nodejs]
+format = "[ ](fg:node)[$symbol$version]($style)[](fg:node)"
+style = "bg:node fg:text_light"
+symbol = " "
+version_format = "${raw}"
+disabled=false
+
+[python]
+disabled=false
+format = '[ ](fg:python)[${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\))]($style)[](fg:python)'
+symbol = " "
+version_format = "${raw}"
+style = "fg:text_light bg:python"
+
+[conda]
+format = "[ ](fg:conda)[$symbol$environment]($style)[](fg:conda)"
+style = "bg:conda fg:text_light"
+ignore_base = false
+disabled=false
+symbol = " "
+
+[os.symbols]
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Gentoo = " "
+Linux = " "
+Macos = " "
+Manjaro = " "
+Mint = " "
+NixOS = " "
+openSUSE = " "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Ubuntu = " "
+Windows = " "
+Unknown = " "

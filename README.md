@@ -10,7 +10,7 @@ Personal Omarchy theme snapshot based on the current desktop setup. This copy pr
 - Hyprlock palette variables (`hyprlock.conf`)
 - Waybar colors (`waybar.css`), based on https://github.com/HANCORE-linux/waybar-themes?tab=readme-ov-file by HANCORE-Linux
 - Terminals: Alacritty (`alacritty.toml`), Ghostty (`ghostty.conf`), Kitty (`kitty.conf`), Warp (`warp.yaml`)
-- Shell/UI tools: btop (`btop.theme`), Cava (`cava_theme`), fzf (`fzf.fish`), fish colors (`colors.fish`)
+- Shell/UI tools: Starship Bash prompt (`starship.toml`), btop (`btop.theme`), Cava (`cava_theme`), fzf (`fzf.fish`), fish colors (`colors.fish`)
 - Notifications and helpers: Mako (`mako.ini`), SwayOSD (`swayosd.css`), Walker launcher (`walker.css`), Wofi (`wofi.css`)
 - Neovim Aether colorscheme + LazyVim config (`neovim.lua`), VS Code (`vscode.json`)
 - GTK + Aether overrides (`gtk.css`, `aether.override.css`)
@@ -33,6 +33,13 @@ mkdir -p ~/.config/waybar.backup
 cp -a ~/.config/waybar/* ~/.config/waybar.backup/
 cp -a waybar-theme/* ~/.config/waybar/
 omarchy-restart-waybar
+```
+
+## Bash prompt install
+Omarchy does not apply `starship.toml` automatically when a theme is installed. To use the matching Bash prompt, copy it after installing the theme:
+
+```bash
+cp -a ~/.config/omarchy/themes/kostoxomarchy/starship.toml ~/.config/starship.toml
 ```
 
 Wallpapers live in `backgrounds/`; `preview.png` and `preview2.png` show the intended look.
